@@ -84,7 +84,7 @@ public class DeveoPlugin extends Builder {
         public FormValidation doCheckApiurl(@QueryParameter String value)
         throws IOException, ServletException {
             if (value.length() == 0)
-                return FormValidation.error("Please set a access");
+                return FormValidation.error("Please set a apiurl");
 //            if (value.length() < 4)
 //                return FormValidation.warning("Isn't the name too short?");
             return FormValidation.ok();
