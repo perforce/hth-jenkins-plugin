@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jvnet.hudson.plugins</groupId>
+		<artifactId>plugin</artifactId>
+		<version>1.394</version>
+	</parent>
+
+	<groupId>com.tikalk.hudson.plugins</groupId>
+	<artifactId>notification</artifactId>
+	<version>1.5-SNAPSHOT</version>
+	<packaging>hpi</packaging>
+	<name>Jenkins Notification plugin</name>
+	<description>Sends notifications about jobs phases and status</description>
+    <url>https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin</url>
+
+	<repositories>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>
+
+	<developers>
+		<developer>
+			<id>markb</id>
+			<name>Mark Berner</name>
+			<email>markb@tikalk.com</email>
+			<organization>Tikal Knowledge</organization>
+			<organizationUrl>http://tikalk.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/jenkinsci/notification-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:jenkinsci/notification-plugin.git</developerConnection>
+		<url>http://github.com/jenkinsci/notification-plugin</url>
+	</scm>
+</project>
