@@ -61,7 +61,7 @@ public class StatusSender {
 		} else {
 			event.setOperation("failed");
 		}
-		event.setCommit(new String[] { "xxx" });
+		event.setCommit(new String[] { getRevision() });
 		event.setScope(endPoint.getCompanyName());
 		event.setResources(new String[] { endPoint.getBuildURL() });
 		event.setProject(endPoint.getProjectName());
@@ -70,5 +70,16 @@ public class StatusSender {
 
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		return jsonObject.toString();
+	}
+
+	private static String getRevision() {
+		String revision  = System.getProperty("GIT_COMMIT");
+		if(revision == null)  {
+			revision = System.getProperty("SVN_REVISION");
+		}
+		if(revision == null)  {
+			revision = System.getProperty("MERCURIAL_REVISION");
+		}		
+		return revision;
 	}
 }

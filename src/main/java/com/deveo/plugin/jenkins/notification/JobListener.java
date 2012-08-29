@@ -1,5 +1,7 @@
 package com.deveo.plugin.jenkins.notification;
 
+import java.util.Properties;
+
 import hudson.Extension;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -26,6 +28,13 @@ public class JobListener extends RunListener<Run> {
 //
 	@Override
 	public void onFinalized(Run r) {
+		Properties p = System.getProperties();
+		StringBuffer  sb = new StringBuffer();
+		for (Object key: p.keySet()) {
+			
+			sb.append(key+" :: ");
+		}
+		String result = sb.toString();
 		Phase.FINISHED.handlePhase(r, getStatus(r), TaskListener.NULL);
 	}
 
