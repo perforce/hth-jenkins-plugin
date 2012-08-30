@@ -9,13 +9,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import java.util.logging.*;
 
 import net.sf.json.JSONObject;
 
 public class StatusSender {
+	
+	Logger logger = Logger.getLogger("com.deveo.plugin");
 
-	public static void send(Endpoint endPoint, String status)
+
+	public static void send(Endpoint endPoint, String status, String revision)
 			throws IOException {
 
 		URL url = new URL(endPoint.getApiURL());
@@ -23,7 +26,7 @@ public class StatusSender {
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json");
 
-		String content = getRequestBody(endPoint, status);
+		String content = getRequestBody(endPoint, status, revision);
 		connection.setRequestProperty("Content-Length",
 				"" + Integer.toString(content.getBytes().length));
 
@@ -49,7 +52,7 @@ public class StatusSender {
 		rd.close();
 	}
 
-	private static String getRequestBody(Endpoint endPoint, String status) {
+	private static String getRequestBody(Endpoint endPoint, String status, String revision) {
 		Request request = new Request();
 		request.setAccount_key(endPoint.getAccountKey());
 		request.setPlugin_key(endPoint.getPluginKey());
@@ -61,7 +64,7 @@ public class StatusSender {
 		} else {
 			event.setOperation("failed");
 		}
-		event.setCommit(new String[] { getRevision() });
+		event.setCommit(new String[] { revision});
 		event.setScope(endPoint.getCompanyName());
 		event.setResources(new String[] { endPoint.getBuildURL() });
 		event.setProject(endPoint.getProjectName());
@@ -72,14 +75,4 @@ public class StatusSender {
 		return jsonObject.toString();
 	}
 
-	private static String getRevision() {
-		String revision  = System.getProperty("GIT_COMMIT");
-		if(revision == null)  {
-			revision = System.getProperty("SVN_REVISION");
-		}
-		if(revision == null)  {
-			revision = System.getProperty("MERCURIAL_REVISION");
-		}		
-		return revision;
-	}
 }

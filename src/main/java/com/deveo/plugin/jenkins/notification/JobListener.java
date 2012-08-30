@@ -1,17 +1,19 @@
 package com.deveo.plugin.jenkins.notification;
 
-import java.util.Properties;
-
 import hudson.Extension;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.Run;
 import hudson.model.listeners.RunListener;
 
+import java.util.logging.Logger;
+
 @Extension
 @SuppressWarnings("rawtypes")
 public class JobListener extends RunListener<Run> {
 
+	Logger logger = Logger.getLogger("com.deveo.plugin");
+	
 	public JobListener() {
 		super(Run.class);
 	}
@@ -28,13 +30,7 @@ public class JobListener extends RunListener<Run> {
 //
 	@Override
 	public void onFinalized(Run r) {
-		Properties p = System.getProperties();
-		StringBuffer  sb = new StringBuffer();
-		for (Object key: p.keySet()) {
-			
-			sb.append(key+" :: ");
-		}
-		String result = sb.toString();
+		logger.info(" Job finalized !");
 		Phase.FINISHED.handlePhase(r, getStatus(r), TaskListener.NULL);
 	}
 
