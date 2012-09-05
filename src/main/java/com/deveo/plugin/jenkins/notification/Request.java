@@ -1,6 +1,5 @@
 package com.deveo.plugin.jenkins.notification;
 
-import net.sf.json.*;
 
 public class Request {
 	private String account_key;

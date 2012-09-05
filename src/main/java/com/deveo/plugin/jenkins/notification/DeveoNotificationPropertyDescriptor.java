@@ -3,7 +3,6 @@ package com.deveo.plugin.jenkins.notification;
 import hudson.Extension;
 import hudson.model.JobPropertyDescriptor;
 import hudson.model.Job;
-import hudson.util.FormValidation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
