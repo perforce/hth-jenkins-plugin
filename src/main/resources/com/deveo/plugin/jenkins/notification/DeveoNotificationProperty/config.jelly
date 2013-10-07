@@ -1,6 +1,6 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-
+    
 	<f:section title="Job Notifications">
 		<f:entry title="Notification Endpoints" field="endpoints">
 			<f:repeatable name="endpoints" var="endpoint"
@@ -65,8 +65,11 @@
 									</f:entry>
 								</td>
 							</tr>
-						</table>
-					</f:entry>
+						</table> 
+                                                <div align="right">
+                                                    <input type="button" value="${%Delete endpoint}" class="repeatable-delete show-if-only" style="margin-left: 1em;" /><br/> 
+                                                </div>
+                                        </f:entry>
 				</table>
 			</f:repeatable>
 		</f:entry>
