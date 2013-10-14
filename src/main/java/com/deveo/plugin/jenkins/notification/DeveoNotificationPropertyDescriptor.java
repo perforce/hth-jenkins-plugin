@@ -41,7 +41,7 @@ public final class DeveoNotificationPropertyDescriptor extends JobPropertyDescri
 	}
 
 	public String getDisplayName() {
-		return "Hudson Job Notification";
+		return "Jenkins Job Notification";
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class StatusSender {
 	Logger logger = Logger.getLogger("com.deveo.plugin");
 
 
-	public static void send(Endpoint endPoint, String status, String revision)
+	public static void send(Endpoint endPoint, String status, String revision, String buildUrl)
 			throws IOException {
 
 		URL url = new URL(endPoint.getApiURL());
@@ -24,7 +24,7 @@ public class StatusSender {
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json");
 
-		String content = getRequestBody(endPoint, status, revision);
+		String content = getRequestBody(endPoint, status, revision, buildUrl);
 		connection.setRequestProperty("Content-Length",
 				"" + Integer.toString(content.getBytes().length));
 
@@ -50,7 +50,7 @@ public class StatusSender {
 		rd.close();
 	}
 
-	private static String getRequestBody(Endpoint endPoint, String status, String revision) {
+	private static String getRequestBody(Endpoint endPoint, String status, String revision, String buildUrl) {
 		Request request = new Request();
 		request.setAccount_key(endPoint.getAccountKey());
 		request.setPlugin_key(endPoint.getPluginKey());
@@ -64,7 +64,7 @@ public class StatusSender {
 		}
 		event.setCommit(new String[] { revision});
 		event.setScope(endPoint.getCompanyName());
-		event.setResources(new String[] { endPoint.getBuildURL() });
+		event.setResources(new String[] { buildUrl });
 		event.setProject(endPoint.getProjectName());
 		event.setRepository(endPoint.getRepositoryName());
 		request.setEvent(event);

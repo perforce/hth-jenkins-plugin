@@ -1,11 +1,13 @@
 package com.deveo.plugin.jenkins.notification;
 
 import hudson.EnvVars;
+import hudson.model.Job;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -15,11 +17,14 @@ public enum Phase {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void handlePhase(Run run, String status, TaskListener listener) {
+                
 
 		String gitCommit = null;
+                String buildUrl = null;
 		try {
 			EnvVars environment = run.getEnvironment(TaskListener.NULL);
 			gitCommit = environment.get("GIT_COMMIT");
+                        buildUrl = environment.get("BUILD_URL");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,13 +38,13 @@ public enum Phase {
 		if (property != null) {
 			List<Endpoint> targets = property.getEndpoints();
 			for (Endpoint target : targets) {
-                try {
-                	StatusSender.send(target, status, gitCommit);
-                } catch (IOException e) {
-                    e.printStackTrace(listener.error("Failed to notify "+target));
-                }
+                            try {
+                                    StatusSender.send(target, status, gitCommit, buildUrl);
+                            } catch (IOException e) {
+                                e.printStackTrace(listener.error("Failed to notify "+target));
+                            }
 				
-            }
+                        }
 		}
 	}
 }

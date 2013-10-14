@@ -53,13 +53,6 @@
 							</tr>
 							<tr>
 								<td>
-									<f:entry title="Build URL" description="" field="buildURL">
-									 <f:textbox name="buildURL" value="${endpoint.buildURL}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
 									<f:entry title="API URL" description="" field="apiURL">
 									 <f:textbox name="apiURL" value="${endpoint.apiURL}" />
 									</f:entry>

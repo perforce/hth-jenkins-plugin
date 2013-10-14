@@ -12,13 +12,12 @@ public class Endpoint {
 	private String companyName;
 	private String projectName;
 	private String repositoryName;
-	private String buildURL;
 	private String apiURL;
 
 	@DataBoundConstructor
 	public Endpoint(String accountKey,
 			String pluginKey, String companyKey, String companyName,
-			String projectName, String repositoryName, String buildURL,
+			String projectName, String repositoryName,
 			String apiURL) {
 		this.setAccountKey(accountKey);
 		this.setPluginKey(pluginKey);
@@ -26,7 +25,6 @@ public class Endpoint {
 		this.setCompanyName(companyName);
 		this.setProjectName(projectName);
 		this.setRepositoryName(repositoryName);
-		this.setBuildURL(buildURL);
 		this.setApiURL(apiURL);
 	}
 
@@ -85,14 +83,6 @@ public class Endpoint {
 
 	public void setRepositoryName(String repositoryName) {
 		this.repositoryName = repositoryName;
-	}
-
-	public String getBuildURL() {
-		return buildURL;
-	}
-
-	public void setBuildURL(String buildURL) {
-		this.buildURL = buildURL;
 	}
 
 	public String getApiURL() {
