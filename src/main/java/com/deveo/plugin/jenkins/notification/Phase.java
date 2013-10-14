@@ -1,13 +1,11 @@
 package com.deveo.plugin.jenkins.notification;
 
 import hudson.EnvVars;
-import hudson.model.Job;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 
 
