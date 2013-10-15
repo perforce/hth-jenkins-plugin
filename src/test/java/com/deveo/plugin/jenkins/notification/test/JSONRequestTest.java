@@ -15,8 +15,7 @@ public class JSONRequestTest extends TestSuite {
 	public void testRequest() {
 
 		Request r = new Request();
-		r.setAccount_key("aaaaaaaaa");
-		
+
 		Event event = new Event();
 		event.setRepository("rrrrrrr");
 		r.setEvent(event);

@@ -2,23 +2,16 @@ package com.deveo.plugin.jenkins.notification;
 
 public class Event {
 	private String target = "build";
-	private String scope;
 	private String operation;
 	private String project;
 	private String repository;
-	private String[] commit;
+	private String[] commits;
 	private String[] resources;
 	public String getTarget() {
 		return target;
 	}
 	public void setTarget(String target) {
 		this.target = target;
-	}
-	public String getScope() {
-		return scope;
-	}
-	public void setScope(String scope) {
-		this.scope = scope;
 	}
 	public String getOperation() {
 		return operation;
@@ -38,11 +31,11 @@ public class Event {
 	public void setRepository(String repository) {
 		this.repository = repository;
 	}
-	public String[] getCommit() {
-		return commit;
+	public String[] getCommits() {
+		return commits;
 	}
-	public void setCommit(String[] commit) {
-		this.commit = commit;
+	public void setCommits(String[] commit) {
+		this.commits = commit;
 	}
 	public String[] getResources() {
 		return resources;
