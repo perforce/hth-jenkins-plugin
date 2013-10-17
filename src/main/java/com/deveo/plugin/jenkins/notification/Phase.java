@@ -6,22 +6,28 @@ import hudson.model.TaskListener;
 
 import java.io.IOException;
 import java.util.List;
-
-
+import org.apache.commons.lang.StringUtils;
 
 
 public enum Phase {
 	STARTED, COMPLETED, FINISHED;
+        
+        private String getRevisionID(EnvVars environment) {
+            String revisionID = environment.get("GIT_COMMIT");
+            if (StringUtils.isBlank(revisionID))
+                revisionID = environment.get("SVN_REVISION");
+            return revisionID;
+        }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void handlePhase(Run run, String status, TaskListener listener) {
                 
 
-		String gitCommit = null;
+		String revisionID = null;
                 String buildUrl = null;
 		try {
 			EnvVars environment = run.getEnvironment(TaskListener.NULL);
-			gitCommit = environment.get("GIT_COMMIT");
+			revisionID = getRevisionID(environment);
                         buildUrl = environment.get("BUILD_URL");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -37,7 +43,7 @@ public enum Phase {
 			List<Endpoint> targets = property.getEndpoints();
 			for (Endpoint target : targets) {
                             try {
-                                    StatusSender.send(target, status, gitCommit, buildUrl);
+                                    StatusSender.send(target, status, revisionID, buildUrl);
                             } catch (IOException e) {
                                 e.printStackTrace(listener.error("Failed to notify "+target));
                             }

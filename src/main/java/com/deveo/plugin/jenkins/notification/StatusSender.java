@@ -24,6 +24,11 @@ import net.sf.json.JSONObject;
 public class StatusSender {
 
     private static final Logger logger = Logger.getLogger("com.deveo.plugin");
+    
+    
+    private static HttpURLConnection getConnection(URL url) throws IOException {
+        return getConnection(url, false);
+    }
 
     
     private static HttpURLConnection getConnection(URL url, boolean acceptInvalidSSLCertificate) throws IOException {
@@ -77,7 +82,7 @@ public class StatusSender {
             throws IOException {
 
         URL url = new URL(endPoint.getApiURL());
-        HttpURLConnection connection = getConnection(url, true);
+        HttpURLConnection connection = getConnection(url);
         
         String authParamValue = buildAuthenticationParameterValue(endPoint);
 
