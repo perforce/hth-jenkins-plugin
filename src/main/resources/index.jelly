@@ -1,5 +1,5 @@
 <div>
-	This plugin from
-	<a href="http://www.tikalk.com">Tikal Knowledge</a>
-	allows sending running Jobs status notifications.
+    This plugin integrates
+    <a href="https://deveo.com/">Deveo</a>
+    to Jenkins.
 </div>
