@@ -43,12 +43,6 @@
             <version>2.4-jenkins-2</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.kohsuke.stapler</groupId>
-            <artifactId>stapler</artifactId>
-            <version>1.218</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <scm>
