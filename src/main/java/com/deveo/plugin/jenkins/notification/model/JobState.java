@@ -31,4 +31,5 @@ public class JobState {
 	public void setBuild(BuildState build) {
 		this.build = build;
 	}
+
 }

@@ -6,63 +6,64 @@ import java.util.Map;
 
 public class BuildState {
 
-	private String fullUrl;
+    private String fullUrl;
 
-	private int number;
+    private int number;
 
-	private Phase phase;
+    private Phase phase;
 
-	private String status;
+    private String status;
 
-	private String url;
-	
-	private Map<String, String> parameters;
+    private String url;
 
-	public int getNumber() {
-		return number;
-	}
+    private Map<String, String> parameters;
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public int getNumber() {
+        return number;
+    }
 
-	public Phase getPhase() {
-		return phase;
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	public void setPhase(Phase phase) {
-		this.phase = phase;
-	}
+    public Phase getPhase() {
+        return phase;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setPhase(Phase phase) {
+        this.phase = phase;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getFullUrl() {
-		return fullUrl;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setFullUrl(String fullUrl) {
-		this.fullUrl = fullUrl;
-	}
+    public String getFullUrl() {
+        return fullUrl;
+    }
 
-	public Map<String, String> getParameters() {
-		return parameters;
-	}
+    public void setFullUrl(String fullUrl) {
+        this.fullUrl = fullUrl;
+    }
 
-	public void setParameters(Map<String, String> params) {
-		this.parameters = params;
-	}
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, String> params) {
+        this.parameters = params;
+    }
+
 }

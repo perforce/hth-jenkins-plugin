@@ -2,8 +2,8 @@ package com.deveo.plugin.jenkins.notification;
 
 import hudson.Extension;
 import hudson.model.Result;
-import hudson.model.TaskListener;
 import hudson.model.Run;
+import hudson.model.TaskListener;
 import hudson.model.listeners.RunListener;
 
 import java.util.logging.Logger;
@@ -12,24 +12,25 @@ import java.util.logging.Logger;
 @SuppressWarnings("rawtypes")
 public class JobListener extends RunListener<Run> {
 
-	Logger logger = Logger.getLogger("com.deveo.plugin");
-	
-	public JobListener() {
-		super(Run.class);
-	}
+    Logger logger = Logger.getLogger("com.deveo.plugin");
 
-	@Override
-	public void onFinalized(Run r) {
-		logger.info(" Job finalized !");
-		Phase.FINISHED.handlePhase(r, getStatus(r), TaskListener.NULL);
-	}
+    public JobListener() {
+        super(Run.class);
+    }
 
-	private String getStatus(Run r) {
-		Result result = r.getResult();
-		String status = null;
-		if (result != null) {
-			status = result.toString();
-		}
-		return status;
-	}
+    @Override
+    public void onFinalized(Run r) {
+        logger.info(" Job finalized !");
+        Phase.FINISHED.handlePhase(r, getStatus(r), TaskListener.NULL);
+    }
+
+    private String getStatus(Run r) {
+        Result result = r.getResult();
+        String status = null;
+        if (result != null) {
+            status = result.toString();
+        }
+        return status;
+    }
+
 }

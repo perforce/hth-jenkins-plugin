@@ -1,65 +1,51 @@
 package com.deveo.plugin.jenkins.notification;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import net.sf.json.JSONObject;
+
+import javax.net.ssl.*;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.logging.Logger;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import net.sf.json.JSONObject;
 
 public class StatusSender {
 
     private static final Logger logger = Logger.getLogger("com.deveo.plugin");
-    
-    
+
     private static HttpURLConnection getConnection(URL url) throws IOException {
         return getConnection(url, false);
     }
 
-    
     private static HttpURLConnection getConnection(URL url, boolean acceptInvalidSSLCertificate) throws IOException {
         if (acceptInvalidSSLCertificate) {  // This is here for testing in environments with invalid certs
             try {
-                
                 final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(final X509Certificate[] chain, final String authType) {
-                        }
+                    @Override
+                    public void checkClientTrusted(final X509Certificate[] chain, final String authType) {
+                    }
 
-                        @Override
-                        public void checkServerTrusted(final X509Certificate[] chain, final String authType) {
-                        }
+                    @Override
+                    public void checkServerTrusted(final X509Certificate[] chain, final String authType) {
+                    }
 
-                        @Override
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return null;
-                        }
-
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
                 }};
 
-                final SSLContext sslContext = SSLContext.getInstance( "SSL" );
-                sslContext.init( null, trustAllCerts, new java.security.SecureRandom() );
+                final SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
                 final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                
+
                 if (conn instanceof HttpsURLConnection) {
-                    ((HttpsURLConnection)conn).setSSLSocketFactory(sslSocketFactory);
-                    ((HttpsURLConnection)conn).setHostnameVerifier(new HostnameVerifier() {
+                    ((HttpsURLConnection) conn).setSSLSocketFactory(sslSocketFactory);
+                    ((HttpsURLConnection) conn).setHostnameVerifier(new HostnameVerifier() {
                         public boolean verify(String string, SSLSession ssls) {
                             return true;
                         }
@@ -81,9 +67,9 @@ public class StatusSender {
     public static void send(Endpoint endPoint, String status, String revision, String buildUrl)
             throws IOException {
 
-        URL url = new URL(endPoint.getApiURL());
+        URL url = new URL(endPoint.getApiUrl());
         HttpURLConnection connection = getConnection(url);
-        
+
         String authParamValue = buildAuthenticationParameterValue(endPoint);
 
         connection.setRequestProperty("Authorization", authParamValue);
@@ -118,11 +104,9 @@ public class StatusSender {
             response.append('\r');
         }
         rd.close();
-
     }
 
     private static String getRequestBody(Endpoint endPoint, String status, String revision, String buildUrl) {
-
         Request request = new Request();
         Event event = new Event();
         if (status.equals("SUCCESS")) {
@@ -132,8 +116,8 @@ public class StatusSender {
         }
         event.setCommits(new String[]{revision});
         event.setResources(new String[]{buildUrl});
-        event.setProject(endPoint.getProjectName());
-        event.setRepository(endPoint.getRepositoryName());
+        event.setProject(endPoint.getProjectId());
+        event.setRepository(endPoint.getRepositoryId());
 
         request.setEvent(event);
         JSONObject jsonObject = JSONObject.fromObject(request);
@@ -148,4 +132,5 @@ public class StatusSender {
         builder.append("account_key=\"" + endpoint.getAccountKey() + "\"");
         return builder.toString();
     }
+
 }

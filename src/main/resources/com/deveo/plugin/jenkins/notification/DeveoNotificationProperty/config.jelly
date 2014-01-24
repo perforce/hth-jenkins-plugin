@@ -1,70 +1,72 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-    
-	<f:section title="Job Notifications">
-		<f:entry title="Notification Endpoints" field="endpoints">
-			<f:repeatable name="endpoints" var="endpoint"
-				items="${instance.endpoints}" add="${%Add Endpoint}">
-				<table class="center-align">
-					<f:entry field="endpoint">
-						<table>
-																			
-							<tr>
-								<td>
-									<f:entry title="Account Key" description="" field="accountKey">
-									 <f:textbox name="accountKey" value="${endpoint.accountKey}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="Plugin Key" description="" field="pluginKey">
-									 <f:textbox name="pluginKey" value="${endpoint.pluginKey}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="Company Key" description="" field="companyKey">
-									 <f:textbox name="companyKey" value="${endpoint.companyKey}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="Company Name" description="" field="companyName">
-									 <f:textbox name="companyName" value="${endpoint.companyName}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="Project Name" description="" field="projectName">
-									 <f:textbox name="projectName" value="${endpoint.projectName}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="Repository Name" description="" field="repositoryName">
-									 <f:textbox name="repositoryName" value="${endpoint.repositoryName}" />
-									</f:entry>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<f:entry title="API URL" description="" field="apiURL">
-									 <f:textbox name="apiURL" value="${endpoint.apiURL}" />
-									</f:entry>
-								</td>
-							</tr>
-						</table> 
-                                                <div align="right">
-                                                    <input type="button" value="${%Delete endpoint}" class="repeatable-delete show-if-only" style="margin-left: 1em;" /><br/> 
-                                                </div>
-                                        </f:entry>
-				</table>
-			</f:repeatable>
-		</f:entry>
-	</f:section>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+    <f:section title="Deveo Job Notifications">
+        <f:entry title="Notification Endpoints" field="endpoints">
+            <f:repeatable name="endpoints" var="endpoint"
+                          items="${instance.endpoints}" add="${%Add Endpoint}">
+                <table class="center-align" style="width: 100%;">
+                    <f:entry field="endpoint">
+                        <table>
+                            <tr>
+                                <td>
+                                    <f:entry title="Account Key" description="" field="accountKey">
+                                        <f:textbox name="accountKey" value="${endpoint.accountKey}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="Plugin Key" description="" field="pluginKey">
+                                        <f:textbox name="pluginKey" value="${endpoint.pluginKey}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="Company Key" description="" field="companyKey">
+                                        <f:textbox name="companyKey" value="${endpoint.companyKey}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="Company ID" description="" field="companyId">
+                                        <f:textbox name="companyId" value="${endpoint.companyId}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="Project ID" description="" field="projectId">
+                                        <f:textbox name="projectId" value="${endpoint.projectId}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="Repository ID" description="" field="repositoryId">
+                                        <f:textbox name="repositoryId" value="${endpoint.repositoryId}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <f:entry title="API URL" description="" field="apiUrl">
+                                        <f:textbox name="apiUrl" value="${endpoint.apiUrl}"/>
+                                    </f:entry>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div align="right">
+                            <input type="button" value="${%Delete Endpoint}" class="repeatable-delete show-if-only"
+                                   style="margin-left: 1em;"/>
+                            <br/>
+                        </div>
+                    </f:entry>
+                </table>
+            </f:repeatable>
+        </f:entry>
+    </f:section>
 </j:jelly>
