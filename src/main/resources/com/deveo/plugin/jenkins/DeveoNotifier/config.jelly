@@ -1,0 +1,28 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+    <f:section title="Deveo API Keys">
+        <f:entry title="Plugin Key" field="pluginKey">
+            <f:textbox name="pluginKey"/>
+        </f:entry>
+
+        <f:entry title="Company Key" field="companyKey">
+            <f:textbox name="companyKey"/>
+        </f:entry>
+
+        <f:entry title="Account Key" field="accountKey">
+            <f:textbox name="accountKey"/>
+        </f:entry>
+    </f:section>
+
+    <f:section title="Deveo Project and Repository Identifiers">
+        <f:entry title="Project ID" field="projectId">
+            <f:textbox name="projectId"/>
+        </f:entry>
+
+        <f:entry title="Repository ID" field="repositoryId">
+            <f:textbox name="repositoryId"/>
+        </f:entry>
+    </f:section>
+
+</j:jelly>

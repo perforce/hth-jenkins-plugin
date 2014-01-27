@@ -1,6 +1,8 @@
-package com.deveo.plugin.jenkins.notification;
+package com.deveo.plugin.jenkins;
 
-public class Event {
+import net.sf.json.JSONObject;
+
+public class DeveoEvent {
 
     private String target = "build";
     private String operation;
@@ -8,6 +10,20 @@ public class Event {
     private String repository;
     private String[] commits;
     private String[] resources;
+
+    public DeveoEvent(String operation, DeveoRepository deveoRepository, String revisionId, String buildUrl) {
+        this.project = deveoRepository.getProjectId();
+        this.repository = deveoRepository.getId();
+        this.operation = operation;
+        this.commits = new String[]{revisionId};
+        this.resources = new String[]{buildUrl};
+    }
+
+    public String toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("event", JSONObject.fromObject(this));
+        return json.toString();
+    }
 
     public String getTarget() {
         return target;
