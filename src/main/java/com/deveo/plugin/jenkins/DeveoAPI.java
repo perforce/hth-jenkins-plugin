@@ -1,8 +1,10 @@
 package com.deveo.plugin.jenkins;
 
 import javax.net.ssl.*;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -15,15 +17,11 @@ public class DeveoAPI {
 
     private String apiUrl;
 
-    private DeveoAuthorizationKeys deveoAuthorizationKeys;
+    private DeveoAPIKeys deveoAPIKeys;
 
-    public DeveoAPI(String apiUrl, DeveoAuthorizationKeys deveoAuthorizationKeys) {
+    public DeveoAPI(String apiUrl, DeveoAPIKeys deveoAPIKeys) {
         this.apiUrl = apiUrl;
-        this.deveoAuthorizationKeys = deveoAuthorizationKeys;
-    }
-
-    public DeveoAuthorizationKeys getDeveoAuthorizationKeys() {
-        return deveoAuthorizationKeys;
+        this.deveoAPIKeys = deveoAPIKeys;
     }
 
     private static HttpURLConnection getConnection(URL url) throws IOException {
@@ -75,14 +73,14 @@ public class DeveoAPI {
         }
     }
 
-    public void create(String endpoint, String content) {
+    public void create(String endpoint, String content) throws DeveoException {
         URL url;
         HttpURLConnection connection;
         try {
             url = new URL(String.format("%s/%s", apiUrl, endpoint));
 
             connection = getConnection(url);
-            connection.setRequestProperty("Authorization", getDeveoAuthorizationKeys().toString());
+            connection.setRequestProperty("Authorization", deveoAPIKeys.toString());
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Content-Length", String.valueOf(content.getBytes().length));
@@ -95,12 +93,28 @@ public class DeveoAPI {
             wr.writeBytes(content);
             wr.flush();
             wr.close();
+
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+                StringBuffer responseContent = new StringBuffer();
+                try {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                    String responseLine;
+                    while ((responseLine = in.readLine()) != null) {
+                        responseContent.append(responseLine);
+                    }
+                    in.close();
+                } catch (Exception ex) {
+                    // Ignore
+                } finally {
+                    throw new DeveoException(String.format("%s %s - %s", connection.getResponseCode(), connection.getResponseMessage(), responseContent.toString()));
+                }
+            }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw new DeveoException(String.format("Deveo API URL could not be parsed: %s", apiUrl));
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            throw new DeveoException(String.format("Deveo connection could not be established due to ProtocolException: %s", e.getMessage()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DeveoException(String.format("Deveo connection could not be established due to IOException: %s", e.getMessage()));
         }
     }
 

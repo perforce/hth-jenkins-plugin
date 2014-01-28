@@ -1,12 +1,12 @@
 package com.deveo.plugin.jenkins;
 
-public class DeveoAuthorizationKeys {
+public class DeveoAPIKeys {
 
     private String pluginKey;
     private String companyKey;
     private String accountKey;
 
-    public DeveoAuthorizationKeys(String pluginKey, String companyKey, String accountKey) {
+    public DeveoAPIKeys(String pluginKey, String companyKey, String accountKey) {
         this.pluginKey = pluginKey;
         this.companyKey = companyKey;
         this.accountKey = accountKey;

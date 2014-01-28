@@ -2,6 +2,12 @@
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
     <f:section title="Deveo notifier">
+        <f:entry title="Deveo Plugin Key" field="pluginKey">
+            <f:textbox default="3c94d47d6257ca0d3bc54a9b6a91aa64"></f:textbox>
+        </f:entry>
+        <f:entry title="Deveo Company Key" field="companyKey">
+            <f:textbox></f:textbox>
+        </f:entry>
         <f:entry title="Deveo API URL"
                  description="URL to Deveo API"
                  field="apiUrl">

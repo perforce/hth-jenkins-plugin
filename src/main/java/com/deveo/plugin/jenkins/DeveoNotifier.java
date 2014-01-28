@@ -17,44 +17,30 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class DeveoNotifier extends Notifier {
 
-    private final DeveoAuthorizationKeys deveoAuthorizationKeys;
-    private final DeveoRepository deveoRepository;
+    private final String accountKey;
+
+    private final DeveoRepository repository;
 
     @DataBoundConstructor
-    public DeveoNotifier(String pluginKey, String companyKey, String accountKey, String projectId, String repositoryId) {
-        this.deveoAuthorizationKeys = new DeveoAuthorizationKeys(pluginKey, companyKey, accountKey);
-        this.deveoRepository = new DeveoRepository(projectId, repositoryId);
-    }
-
-    public String getPluginKey() {
-        return getDeveoAuthorizationKeys().getPluginKey();
-    }
-
-    public String getCompanyKey() {
-        return getDeveoAuthorizationKeys().getCompanyKey();
+    public DeveoNotifier(String accountKey, String projectId, String repositoryId) {
+        this.accountKey = accountKey;
+        this.repository = new DeveoRepository(projectId, repositoryId);
     }
 
     public String getAccountKey() {
-        return getDeveoAuthorizationKeys().getAccountKey();
+        return accountKey;
     }
 
     public String getProjectId() {
-        return getDeveoRepository().getProjectId();
+        return repository.getProjectId();
     }
 
     public String getRepositoryId() {
-        return getDeveoRepository().getId();
-    }
-
-    public DeveoAuthorizationKeys getDeveoAuthorizationKeys() {
-        return deveoAuthorizationKeys;
-    }
-
-    public DeveoRepository getDeveoRepository() {
-        return deveoRepository;
+        return repository.getId();
     }
 
     @Override
@@ -102,14 +88,24 @@ public class DeveoNotifier extends Notifier {
         return environment.get("BUILD_URL");
     }
 
+    private String getOperation(AbstractBuild build) {
+        return build.getResult() == Result.SUCCESS ? "completed" : "failed";
+    }
+
     public void notifyDeveo(AbstractBuild build, BuildListener listener) {
         EnvVars environment = getEnvironment(build, listener);
-        String operation = build.getResult() == Result.SUCCESS ? "completed" : "failed";
 
-        DeveoEvent deveoEvent = new DeveoEvent(operation, getDeveoRepository(), getRevisionId(environment), getBuildUrl(environment));
+        DeveoAPIKeys apiKeys = new DeveoAPIKeys(getDescriptor().getPluginKey(), getDescriptor().getCompanyKey(), accountKey);
+        DeveoAPI api = new DeveoAPI(getDescriptor().getApiUrl(), apiKeys);
+        DeveoEvent event = new DeveoEvent(getOperation(build), repository, getRevisionId(environment), getBuildUrl(environment));
 
-        DeveoAPI api = new DeveoAPI(getDescriptor().getApiUrl(), getDeveoAuthorizationKeys());
-        api.create("events", deveoEvent.toJSON());
+        try {
+            api.create("events", event.toJSON());
+        } catch (DeveoException ex) {
+            PrintStream logger = listener.getLogger();
+            logger.println("Deveo: Failed to create event.");
+            logger.println(String.format("Deveo: %s", ex.getMessage()));
+        }
     }
 
     @Override
@@ -121,9 +117,19 @@ public class DeveoNotifier extends Notifier {
     public static final class DeveoBuildStepDescriptor extends BuildStepDescriptor<Publisher> {
 
         private String apiUrl = "https://deveo.com/api/v0";
+        private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
+        private String companyKey = "";
 
         public String getApiUrl() {
             return apiUrl;
+        }
+
+        public String getPluginKey() {
+            return pluginKey;
+        }
+
+        public String getCompanyKey() {
+            return companyKey;
         }
 
         @Override
@@ -139,7 +145,11 @@ public class DeveoNotifier extends Notifier {
         @Override
         public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
             this.apiUrl = json.getString("apiUrl");
+            this.pluginKey = json.getString("pluginKey");
+            this.companyKey = json.getString("companyKey");
+
             save();
+
             return super.configure(req, json);
         }
 
