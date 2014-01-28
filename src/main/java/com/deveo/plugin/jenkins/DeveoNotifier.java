@@ -139,7 +139,7 @@ public class DeveoNotifier extends Notifier {
 
         @Override
         public String getDisplayName() {
-            return "Deveo notification";
+            return "Deveo Notification";
         }
 
         @Override
