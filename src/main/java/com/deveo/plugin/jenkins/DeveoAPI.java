@@ -94,18 +94,19 @@ public class DeveoAPI {
             wr.flush();
             wr.close();
 
+            BufferedReader in;
             if (connection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+                in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                 StringBuffer responseContent = new StringBuffer();
                 try {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     String responseLine;
                     while ((responseLine = in.readLine()) != null) {
                         responseContent.append(responseLine);
                     }
-                    in.close();
                 } catch (Exception ex) {
                     // Ignore
                 } finally {
+                    in.close();
                     throw new DeveoException(String.format("%s %s - %s", connection.getResponseCode(), connection.getResponseMessage(), responseContent.toString()));
                 }
             }
