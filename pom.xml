@@ -13,6 +13,7 @@
     <packaging>hpi</packaging>
     <name>Deveo Plugin</name>
     <description>Creates build events to Deveo</description>
+    <url>https://github.com/Deveo/jenkins-plugin/</url>
 
     <developers>
         <developer>
