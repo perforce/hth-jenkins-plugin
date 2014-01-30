@@ -47,9 +47,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:git@github.com:Deveo/jenkins-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:Deveo/jenkins-plugin.git</developerConnection>
-        <url>https://github.com/Deveo/jenkins-plugin/</url>
+        <connection>scm:git:git@github.com:jenkinsci/deveo-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/deveo-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/deveo-plugin</url>
     </scm>
 
     <repositories>
