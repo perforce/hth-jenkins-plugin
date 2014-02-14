@@ -45,22 +45,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-jgit</artifactId>
-                        <version>1.9</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
     <scm>
         <connection>scm:git:git@github.com:jenkinsci/deveo-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/deveo-plugin.git</developerConnection>
