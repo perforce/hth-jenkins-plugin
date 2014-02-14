@@ -7,7 +7,7 @@
     </parent>
 
     <artifactId>deveo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <name>Deveo Plugin</name>
     <description>Creates build events to Deveo</description>
