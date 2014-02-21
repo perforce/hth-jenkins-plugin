@@ -92,12 +92,24 @@ public class DeveoNotifier extends Notifier {
         return build.getResult() == Result.SUCCESS ? "completed" : "failed";
     }
 
+    private String getJobName(AbstractBuild build) {
+        return build.getProject().getDisplayName();
+    }
+
+    private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
+        return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
+    }
+
     public void notifyDeveo(AbstractBuild build, BuildListener listener) {
         EnvVars environment = getEnvironment(build, listener);
 
-        DeveoAPIKeys apiKeys = new DeveoAPIKeys(getDescriptor().getPluginKey(), getDescriptor().getCompanyKey(), accountKey);
-        DeveoAPI api = new DeveoAPI(getDescriptor().getApiUrl(), apiKeys);
-        DeveoEvent event = new DeveoEvent(getOperation(build), repository, getRevisionId(environment), getBuildUrl(environment));
+        String operation = getOperation(build);
+        String jobName = getJobName(build);
+        String revisionId = getRevisionId(environment);
+        String buildUrl = getBuildUrl(environment);
+
+        DeveoAPI api = new DeveoAPI(getDescriptor().getApiUrl(), getApiKeys(getDescriptor()));
+        DeveoEvent event = new DeveoEvent(operation, jobName, repository, revisionId, buildUrl);
 
         try {
             api.create("events", event.toJSON());

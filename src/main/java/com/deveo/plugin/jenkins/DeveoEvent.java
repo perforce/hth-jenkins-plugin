@@ -6,12 +6,14 @@ public class DeveoEvent {
 
     private String target = "build";
     private String operation;
+    private String name;
     private String project;
     private String repository;
     private String[] commits;
     private String[] resources;
 
-    public DeveoEvent(String operation, DeveoRepository deveoRepository, String revisionId, String buildUrl) {
+    public DeveoEvent(String operation, String name, DeveoRepository deveoRepository, String revisionId, String buildUrl) {
+        this.name = name;
         this.project = deveoRepository.getProjectId();
         this.repository = deveoRepository.getId();
         this.operation = operation;
@@ -39,6 +41,14 @@ public class DeveoEvent {
 
     public void setOperation(String operation) {
         this.operation = operation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProject() {
