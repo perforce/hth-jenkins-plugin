@@ -120,6 +120,10 @@ public class DeveoNotifier extends Notifier {
         private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
         private String companyKey = "";
 
+        public DeveoBuildStepDescriptor() {
+            load();
+        }
+
         public String getApiUrl() {
             return apiUrl;
         }
