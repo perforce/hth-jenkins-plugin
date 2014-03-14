@@ -9,7 +9,7 @@
             <f:textbox></f:textbox>
         </f:entry>
         <f:entry title="Deveo API URL"
-                 description="URL to Deveo API"
+                 description="URL to Deveo API (e.g. https://deveo.com/api/v0)"
                  field="apiUrl">
             <f:textbox default="https://deveo.com/api/v0"/>
         </f:entry>
