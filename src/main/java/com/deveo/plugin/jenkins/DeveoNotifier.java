@@ -43,7 +43,6 @@ public class DeveoNotifier extends Notifier {
         return repository.getId();
     }
 
-    @Override
     public BuildStepMonitor getRequiredMonitorService() {
         return BuildStepMonitor.NONE;
     }

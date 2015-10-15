@@ -32,15 +32,12 @@ public class DeveoAPI {
         if (acceptInvalidSSLCertificate) { // This is here for testing in environments with invalid certs
             try {
                 final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                    @Override
                     public void checkClientTrusted(final X509Certificate[] chain, final String authType) {
                     }
 
-                    @Override
                     public void checkServerTrusted(final X509Certificate[] chain, final String authType) {
                     }
 
-                    @Override
                     public X509Certificate[] getAcceptedIssuers() {
                         return null;
                     }
