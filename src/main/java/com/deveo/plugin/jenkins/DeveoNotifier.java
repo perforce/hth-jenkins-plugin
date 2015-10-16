@@ -107,7 +107,7 @@ public class DeveoNotifier extends Notifier {
         String revisionId = getRevisionId(environment);
         String buildUrl = getBuildUrl(environment);
 
-        DeveoAPI api = new DeveoAPI(getDescriptor().getApiUrl(), getApiKeys(getDescriptor()));
+        DeveoAPI api = new DeveoAPI(getDescriptor().getHostname(), getApiKeys(getDescriptor()));
         DeveoEvent event = new DeveoEvent(operation, jobName, repository, revisionId, buildUrl);
 
         try {
@@ -127,7 +127,7 @@ public class DeveoNotifier extends Notifier {
     @Extension
     public static final class DeveoBuildStepDescriptor extends BuildStepDescriptor<Publisher> {
 
-        private String apiUrl = "https://deveo.com/api/v0";
+        private String hostname = "https://deveo.com";
         private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
         private String companyKey = "";
 
@@ -135,8 +135,8 @@ public class DeveoNotifier extends Notifier {
             load();
         }
 
-        public String getApiUrl() {
-            return apiUrl;
+        public String getHostname() {
+            return hostname;
         }
 
         public String getPluginKey() {
@@ -159,7 +159,7 @@ public class DeveoNotifier extends Notifier {
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
-            this.apiUrl = json.getString("apiUrl");
+            this.hostname = json.getString("hostname");
             this.pluginKey = json.getString("pluginKey");
             this.companyKey = json.getString("companyKey");
 

@@ -15,12 +15,12 @@ import java.security.cert.X509Certificate;
 
 public class DeveoAPI {
 
-    private String apiUrl;
+    private String hostname;
 
     private DeveoAPIKeys deveoAPIKeys;
 
-    public DeveoAPI(String apiUrl, DeveoAPIKeys deveoAPIKeys) {
-        this.apiUrl = apiUrl;
+    public DeveoAPI(String hostname, DeveoAPIKeys deveoAPIKeys) {
+        this.hostname = hostname;
         this.deveoAPIKeys = deveoAPIKeys;
     }
 
@@ -74,7 +74,7 @@ public class DeveoAPI {
         URL url;
         HttpURLConnection connection;
         try {
-            url = new URL(String.format("%s/%s", apiUrl, endpoint));
+            url = new URL(String.format("%s/api/v0/%s", hostname, endpoint));
 
             connection = getConnection(url);
             connection.setRequestProperty("Authorization", deveoAPIKeys.toString());
@@ -108,7 +108,7 @@ public class DeveoAPI {
                 }
             }
         } catch (MalformedURLException e) {
-            throw new DeveoException(String.format("Deveo API URL could not be parsed: %s", apiUrl));
+            throw new DeveoException(String.format("Deveo API hostname could not be parsed: %s", hostname));
         } catch (ProtocolException e) {
             throw new DeveoException(String.format("Deveo connection could not be established due to ProtocolException: %s", e.getMessage()));
         } catch (IOException e) {
