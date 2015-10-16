@@ -54,7 +54,8 @@ public class DeveoNotifier extends Notifier {
 
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
-        notifyDeveo(build, listener);
+        EnvVars environment = getEnvironment(build, listener);
+        notifyDeveo(build, listener, environment);
         return true;
     }
 
@@ -72,15 +73,12 @@ public class DeveoNotifier extends Notifier {
         return environment;
     }
 
+    private boolean isGit(EnvVars environment) {
+        return StringUtils.isNotBlank(environment.get("GIT_COMMIT"));
+    }
+
     private String getRevisionId(EnvVars environment) {
-        String revisionId = "";
-
-        revisionId = environment.get("GIT_COMMIT");
-        if (StringUtils.isBlank(revisionId)) {
-            revisionId = environment.get("SVN_REVISION");
-        }
-
-        return revisionId;
+        return isGit(environment) ? environment.get("GIT_COMMIT") : environment.get("SVN_REVISION");
     }
 
     private String getBuildUrl(EnvVars environment) {
@@ -95,20 +93,23 @@ public class DeveoNotifier extends Notifier {
         return build.getProject().getDisplayName();
     }
 
+    private String getRef(EnvVars environment) {
+        return isGit(environment) ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
+    }
+
     private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
         return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
     }
 
-    public void notifyDeveo(AbstractBuild build, BuildListener listener) {
-        EnvVars environment = getEnvironment(build, listener);
-
+    public void notifyDeveo(AbstractBuild build, BuildListener listener, EnvVars environment) {
         String operation = getOperation(build);
         String jobName = getJobName(build);
+        String ref = getRef(environment);
         String revisionId = getRevisionId(environment);
         String buildUrl = getBuildUrl(environment);
 
         DeveoAPI api = new DeveoAPI(getDescriptor().getHostname(), getApiKeys(getDescriptor()));
-        DeveoEvent event = new DeveoEvent(operation, jobName, repository, revisionId, buildUrl);
+        DeveoEvent event = new DeveoEvent(operation, jobName, repository, ref, revisionId, buildUrl);
 
         try {
             api.create("events", event.toJSON());
