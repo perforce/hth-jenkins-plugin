@@ -38,10 +38,10 @@ public class DeveoEventTest  {
         jsonEvent.put("operation", event.getOperation());
         // "project": "platform"
         jsonEvent.put("project", event.getProject());
-        // "repository": "backend"
-        jsonEvent.put("repository", event.getRepository());
         // "ref": "master"
         jsonEvent.put("ref", event.getRef());
+        // "repository": "backend"
+        jsonEvent.put("repository", event.getRepository());
         // "resources": ["https://example.com/jenkins/job/test/42"]
         jsonEvent.put("resources", JSONArray.fromObject(event.getResources()));
         // "target": "build"
