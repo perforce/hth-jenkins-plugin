@@ -74,9 +74,10 @@ public class DeveoAPI {
         URL url;
         HttpURLConnection connection;
         try {
-            url = new URL(String.format("%s/api/v0/%s", hostname, endpoint));
+            url = new URL(String.format("%s/api/%s", hostname, endpoint));
 
             connection = getConnection(url);
+            connection.setRequestProperty("Accept", "application/vnd.deveo.v1");
             connection.setRequestProperty("Authorization", deveoAPIKeys.toString());
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
