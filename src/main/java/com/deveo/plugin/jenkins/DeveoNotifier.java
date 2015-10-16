@@ -55,7 +55,9 @@ public class DeveoNotifier extends Notifier {
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
         EnvVars environment = getEnvironment(build, listener);
-        notifyDeveo(build, listener, environment);
+        if (isSupportedSCM(environment)) {
+            notifyDeveo(build, listener, environment);
+        }
         return true;
     }
 
@@ -73,8 +75,16 @@ public class DeveoNotifier extends Notifier {
         return environment;
     }
 
+    private boolean isSupportedSCM(EnvVars environment) {
+        return isGit(environment) || isSubversion(environment);
+    }
+
     private boolean isGit(EnvVars environment) {
         return StringUtils.isNotBlank(environment.get("GIT_COMMIT"));
+    }
+
+    private boolean isSubversion(EnvVars environment) {
+        return StringUtils.isNotBlank(environment.get("SVN_REVISION"));
     }
 
     private String getRevisionId(EnvVars environment) {
