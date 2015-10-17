@@ -7,12 +7,12 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
 import hudson.model.Result;
+import hudson.scm.SCM;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
 import hudson.tasks.Publisher;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -20,6 +20,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 public class DeveoNotifier extends Notifier {
+
+    private static final String SCM_GIT = "hudson.plugins.git.GitSCM";
+
+    private static final String SCM_SUBVERSION = "hudson.scm.SubversionSCM";
+
+    private static final String SCM_MERCURIAL = "hudson.plugins.mercurial.MercurialSCM";
 
     private final String accountKey;
 
@@ -54,10 +60,8 @@ public class DeveoNotifier extends Notifier {
 
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
-        EnvVars environment = getEnvironment(build, listener);
-        if (isSupportedSCM(environment)) {
-            notifyDeveo(build, listener, environment);
-        }
+        notifyDeveo(build, listener);
+
         return true;
     }
 
@@ -66,29 +70,31 @@ public class DeveoNotifier extends Notifier {
 
         try {
             environment = build.getEnvironment(listener);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
         return environment;
     }
 
-    private boolean isSupportedSCM(EnvVars environment) {
-        return isGit(environment) || isSubversion(environment);
-    }
+    private String getRevisionId(SCM scm, EnvVars environment) {
+        String id;
 
-    private boolean isGit(EnvVars environment) {
-        return StringUtils.isNotBlank(environment.get("GIT_COMMIT"));
-    }
+        switch (scm.getType()) {
+            case SCM_GIT:
+                id = environment.get("GIT_COMMIT");
+                break;
+            case SCM_SUBVERSION:
+                id = environment.get("SVN_REVISION");
+                break;
+            case SCM_MERCURIAL:
+                id = environment.get("MERCURIAL_REVISION");
+                break;
+            default:
+                id = "";
+        }
 
-    private boolean isSubversion(EnvVars environment) {
-        return StringUtils.isNotBlank(environment.get("SVN_REVISION"));
-    }
-
-    private String getRevisionId(EnvVars environment) {
-        return isGit(environment) ? environment.get("GIT_COMMIT") : environment.get("SVN_REVISION");
+        return id;
     }
 
     private String getBuildUrl(EnvVars environment) {
@@ -103,19 +109,22 @@ public class DeveoNotifier extends Notifier {
         return build.getProject().getDisplayName();
     }
 
-    private String getRef(EnvVars environment) {
-        return isGit(environment) ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
+    private String getRef(SCM scm, EnvVars environment) {
+        return scm.getType() == SCM_GIT ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
     }
 
     private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
         return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
     }
 
-    public void notifyDeveo(AbstractBuild build, BuildListener listener, EnvVars environment) {
+    public void notifyDeveo(AbstractBuild build, BuildListener listener) {
+        EnvVars environment = getEnvironment(build, listener);
+        SCM scm = build.getProject().getScm();
+
         String operation = getOperation(build);
         String jobName = getJobName(build);
-        String ref = getRef(environment);
-        String revisionId = getRevisionId(environment);
+        String ref = getRef(scm, environment);
+        String revisionId = getRevisionId(scm, environment);
         String buildUrl = getBuildUrl(environment);
 
         DeveoAPI api = new DeveoAPI(getDescriptor().getHostname(), getApiKeys(getDescriptor()));
