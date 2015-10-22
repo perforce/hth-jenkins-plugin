@@ -18,6 +18,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
 
 public class DeveoNotifier extends Notifier {
 
@@ -29,24 +30,13 @@ public class DeveoNotifier extends Notifier {
 
     private final String accountKey;
 
-    private final DeveoRepository repository;
-
     @DataBoundConstructor
-    public DeveoNotifier(String accountKey, String projectId, String repositoryId) {
+    public DeveoNotifier(String accountKey) {
         this.accountKey = accountKey;
-        this.repository = new DeveoRepository(projectId, repositoryId);
     }
 
     public String getAccountKey() {
         return accountKey;
-    }
-
-    public String getProjectId() {
-        return repository.getProjectId();
-    }
-
-    public String getRepositoryId() {
-        return repository.getId();
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
@@ -113,6 +103,26 @@ public class DeveoNotifier extends Notifier {
         return scm.getType() == SCM_GIT ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
     }
 
+    private String getRepositoryURL(SCM scm, EnvVars environment) {
+        String repositoryURL;
+
+        switch (scm.getType()) {
+            case SCM_GIT:
+                repositoryURL = environment.get("GIT_URL");
+                break;
+            case SCM_SUBVERSION:
+                repositoryURL = environment.get("SVN_URL");
+                break;
+            case SCM_MERCURIAL:
+                repositoryURL = environment.get("MERCURIAL_REPOSITORY_URL");
+                break;
+            default:
+                repositoryURL = "";
+        }
+
+        return repositoryURL;
+    }
+
     private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
         return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
     }
@@ -126,6 +136,19 @@ public class DeveoNotifier extends Notifier {
         String ref = getRef(scm, environment);
         String revisionId = getRevisionId(scm, environment);
         String buildUrl = getBuildUrl(environment);
+        String repositoryURL = getRepositoryURL(scm, environment);
+
+        DeveoRepository repository;
+
+        try {
+            repository = new DeveoRepository(repositoryURL);
+        } catch (MalformedURLException ex) {
+            logError(listener, "The configured repository URL is malformed.", ex);
+            return;
+        } catch (DeveoURLException ex) {
+            logError(listener, "The configured repository URL is not a Deveo URL.", ex);
+            return;
+        }
 
         DeveoAPI api = new DeveoAPI(getDescriptor().getHostname(), getApiKeys(getDescriptor()));
         DeveoEvent event = new DeveoEvent(operation, jobName, repository, ref, revisionId, buildUrl);
@@ -133,10 +156,14 @@ public class DeveoNotifier extends Notifier {
         try {
             api.create("events", event.toJSON());
         } catch (DeveoException ex) {
-            PrintStream logger = listener.getLogger();
-            logger.println("Deveo: Failed to create event.");
-            logger.println(String.format("Deveo: %s", ex.getMessage()));
+            logError(listener, "Failed to create event.", ex);
         }
+    }
+
+    private void logError(BuildListener listener, String message, Exception ex) {
+        PrintStream logger = listener.getLogger();
+        logger.println(String.format("Deveo: %s", message));
+        logger.println(String.format("Deveo: %s", ex.getMessage()));
     }
 
     @Override
