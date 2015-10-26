@@ -2,50 +2,34 @@
 
 Use this plugin to create build events to Deveo from your Jenkins builds. See the [official documentation](https://wiki.jenkins-ci.org/display/JENKINS/Deveo+Plugin) for more information.
 
-## Prerequisites
+## Contributing
 
-Download and install [JDK 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
+To contribute, please utilize Pull Requests as you would in any other project. Development is done on `develop` branch.
 
-Install Maven:
+### Prerequisites
 
-    $ brew install maven
+You'll need [Vagrant](https://www.vagrantup.com/) to get the development environment running. You can simply install it via [Homebrew Cask](http://caskroom.io/) with:
 
-Define the path to your Java 7 compiler in your `~/.m2/settings.xml`:
+    $ brew cask install vagrant
 
-```xml
-<settings>
-  <profiles>
-    <profile>
-      <id>compiler</id>
-        <properties>
-          <JAVA_1_7_HOME>/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home</JAVA_1_7_HOME>
-        </properties>
-    </profile>
-  </profiles>
-  <activeProfiles>
-    <activeProfile>compiler</activeProfile>
-  </activeProfiles>
-</settings>
-```
+### Getting started
 
-## Useful commands
+Start the virtual machine
 
-To build the thing
+    $ vagrant up
 
-    $ mvn install
+SSH into the machine
 
-To generate .hpi package
+    $ vagrant ssh
 
-    $ mvn hpi:hpi
+Navigate to the shared working directory
 
-To run the plugin in a local Jenkins instance
+    $ cd /vagrant
+
+Build the plugin and start Jenkins
 
     $ mvn hpi:run
 
-To run tests
+If you are only doing template changes, you can simply hit Enter on the console to reload the context. In other cases you'll need to re-execute the aforementioned command.
 
-    $ mvn -D test=DeveoTestSuite
-
-To deploy it
-
-    $ mvn -B release:prepare release:perform
+You can now access Jenkins from your host machine on http://10.11.12.100:8080/jenkins.
