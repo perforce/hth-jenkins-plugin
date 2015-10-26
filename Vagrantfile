@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
     vb.memory = "1024"
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
     wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
     sudo apt-get update
@@ -19,6 +19,7 @@ Vagrant.configure(2) do |config|
     sudo chown -R vagrant.vagrant /var/cache/jenkins /var/lib/jenkins /var/log/jenkins
 
     # configure settings.xml as mentioned in the prerequisites
+    mkdir ~/.m2 > /dev/null 2>&1
     cat <<EOF > ~/.m2/settings.xml
 <settings>
   <profiles>
@@ -34,6 +35,9 @@ Vagrant.configure(2) do |config|
   </activeProfiles>
 </settings>
 EOF
+
+    # Set HUDSON_HOME for maven builds
+    echo 'export HUDSON_HOME=/var/lib/jenkins' > ~/.profile
 
     sudo service jenkins restart
     sudo update-rc.d jenkins enable
