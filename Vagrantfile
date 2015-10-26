@@ -39,8 +39,9 @@ EOF
     # Set HUDSON_HOME for maven builds
     echo 'export HUDSON_HOME=/var/lib/jenkins' > ~/.profile
 
-    sudo service jenkins restart
-    sudo update-rc.d jenkins enable
+    # Stop the jenkins service so that hpi:run doesn't complain about 8080 port
+    sudo service jenkins stop
+    sudo update-rc.d jenkins disable
   SHELL
 end
 
