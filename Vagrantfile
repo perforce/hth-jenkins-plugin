@@ -13,7 +13,8 @@ Vagrant.configure(2) do |config|
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
     sudo apt-get update
     sudo apt-get install openjdk-7-jdk jenkins maven -y
-    sudo service jenkins start
+    sudo sed -i 's/^JENKINS_USER.*/JENKINS_USER=vagrant/;s/^JENKINS_GROUP.*/JENKINS_GROUP=vagrant/' /etc/default/jenkins
+    sudo service jenkins restart
     sudo update-rc.d jenkins enable
   SHELL
 end
