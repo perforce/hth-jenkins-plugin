@@ -3,7 +3,7 @@
 Vagrant.configure(2) do |config|
 
   config.vm.box = "ubuntu/trusty64"
-  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "private_network", ip: "10.11.12.100"
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
   end
