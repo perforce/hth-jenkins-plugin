@@ -13,8 +13,30 @@ Vagrant.configure(2) do |config|
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
     sudo apt-get update
     sudo apt-get install openjdk-7-jdk jenkins maven -y
+
+    # Run Jenkins as the vagrant user
     sudo sed -i 's/^JENKINS_USER.*/JENKINS_USER=vagrant/;s/^JENKINS_GROUP.*/JENKINS_GROUP=vagrant/' /etc/default/jenkins
+    sudo chown -R vagrant.vagrant /var/cache/jenkins /var/lib/jenkins /var/log/jenkins
+
+    # configure settings.xml as mentioned in the prerequisites
+    cat <<EOF > ~/.m2/settings.xml
+<settings>
+  <profiles>
+    <profile>
+      <id>compiler</id>
+        <properties>
+          <JAVA_1_7_HOME>/usr/lib/jvm/java-7-openjdk-amd64</JAVA_1_7_HOME>
+        </properties>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>compiler</activeProfile>
+  </activeProfiles>
+</settings>
+EOF
+
     sudo service jenkins restart
     sudo update-rc.d jenkins enable
   SHELL
 end
+
