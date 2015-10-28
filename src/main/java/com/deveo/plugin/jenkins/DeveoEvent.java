@@ -9,13 +9,15 @@ public class DeveoEvent {
     private String name;
     private String project;
     private String repository;
+    private String ref;
     private String[] commits;
     private String[] resources;
 
-    public DeveoEvent(String operation, String name, DeveoRepository deveoRepository, String revisionId, String buildUrl) {
+    public DeveoEvent(String operation, String name, DeveoRepository deveoRepository, String ref, String revisionId, String buildUrl) {
         this.name = name;
         this.project = deveoRepository.getProjectId();
         this.repository = deveoRepository.getId();
+        this.ref = ref;
         this.operation = operation;
         this.commits = new String[]{revisionId};
         this.resources = new String[]{buildUrl};
@@ -65,6 +67,14 @@ public class DeveoEvent {
 
     public void setRepository(String repository) {
         this.repository = repository;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 
     public String[] getCommits() {

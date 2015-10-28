@@ -15,12 +15,12 @@ import java.security.cert.X509Certificate;
 
 public class DeveoAPI {
 
-    private String apiUrl;
+    private String hostname;
 
     private DeveoAPIKeys deveoAPIKeys;
 
-    public DeveoAPI(String apiUrl, DeveoAPIKeys deveoAPIKeys) {
-        this.apiUrl = apiUrl;
+    public DeveoAPI(String hostname, DeveoAPIKeys deveoAPIKeys) {
+        this.hostname = hostname;
         this.deveoAPIKeys = deveoAPIKeys;
     }
 
@@ -32,15 +32,12 @@ public class DeveoAPI {
         if (acceptInvalidSSLCertificate) { // This is here for testing in environments with invalid certs
             try {
                 final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                    @Override
                     public void checkClientTrusted(final X509Certificate[] chain, final String authType) {
                     }
 
-                    @Override
                     public void checkServerTrusted(final X509Certificate[] chain, final String authType) {
                     }
 
-                    @Override
                     public X509Certificate[] getAcceptedIssuers() {
                         return null;
                     }
@@ -77,9 +74,10 @@ public class DeveoAPI {
         URL url;
         HttpURLConnection connection;
         try {
-            url = new URL(String.format("%s/%s", apiUrl, endpoint));
+            url = new URL(String.format("%s/api/%s", hostname, endpoint));
 
             connection = getConnection(url);
+            connection.setRequestProperty("Accept", "application/vnd.deveo.v1");
             connection.setRequestProperty("Authorization", deveoAPIKeys.toString());
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -111,7 +109,7 @@ public class DeveoAPI {
                 }
             }
         } catch (MalformedURLException e) {
-            throw new DeveoException(String.format("Deveo API URL could not be parsed: %s", apiUrl));
+            throw new DeveoException(String.format("Deveo API hostname could not be parsed: %s", hostname));
         } catch (ProtocolException e) {
             throw new DeveoException(String.format("Deveo connection could not be established due to ProtocolException: %s", e.getMessage()));
         } catch (IOException e) {

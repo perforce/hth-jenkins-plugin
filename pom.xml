@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.533</version>
+        <version>1.627</version>
     </parent>
 
     <artifactId>deveo</artifactId>
@@ -25,22 +25,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-            <scope>provided</scope>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>git</artifactId>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>provided</scope>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>subversion</artifactId>
+            <version>2.5.3</version>
         </dependency>
         <dependency>
-            <groupId>org.kohsuke.stapler</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4-jenkins-2</version>
-            <scope>provided</scope>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>mercurial</artifactId>
+            <version>1.54</version>
         </dependency>
     </dependencies>
 
@@ -63,4 +60,31 @@
             <url>http://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <executable>${JAVA_1_7_HOME}/bin/javac</executable>
+                    <compilerVersion>1.7</compilerVersion>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>InjectedTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

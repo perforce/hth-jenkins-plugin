@@ -20,10 +20,11 @@ public class DeveoEventTest  {
         String projectId = "platform";
         String repositoryId = "backend";
         DeveoRepository repository = new DeveoRepository(projectId, repositoryId);
+        String ref = "master";
         String revisionId = "d27327b131054d4a9922546aa5ecb14ba22f45ad";
         String buildUrl = "https://example.com/jenkins/job/test/42";
 
-        event = new DeveoEvent(operation, name, repository, revisionId, buildUrl);
+        event = new DeveoEvent(operation, name, repository, ref, revisionId, buildUrl);
     }
 
     @Test
@@ -37,6 +38,8 @@ public class DeveoEventTest  {
         jsonEvent.put("operation", event.getOperation());
         // "project": "platform"
         jsonEvent.put("project", event.getProject());
+        // "ref": "master"
+        jsonEvent.put("ref", event.getRef());
         // "repository": "backend"
         jsonEvent.put("repository", event.getRepository());
         // "resources": ["https://example.com/jenkins/job/test/42"]
