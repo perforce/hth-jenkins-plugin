@@ -2,6 +2,8 @@ package com.deveo.plugin.jenkins;
 
 public class DeveoAPIKeys {
 
+    private static final String FORMAT = "deveo plugin_key=\"%s\",company_key=\"%s\",account_key=\"%s\"";
+
     private String pluginKey;
     private String companyKey;
     private String accountKey;
@@ -25,12 +27,7 @@ public class DeveoAPIKeys {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("deveo ");
-        builder.append("plugin_key=\"" + pluginKey + "\",");
-        builder.append("company_key=\"" + companyKey + "\",");
-        builder.append("account_key=\"" + accountKey + "\"");
-        return builder.toString();
+        return String.format(FORMAT, pluginKey, companyKey, accountKey);
     }
 
 }
