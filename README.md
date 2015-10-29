@@ -32,4 +32,19 @@ Build the plugin and start Jenkins
 
 If you are only doing template changes, you can simply hit Enter on the console to reload the context. In other cases you'll need to re-execute the aforementioned command.
 
-You can now access Jenkins from your host machine on http://10.11.12.100:8080/jenkins.
+You can now access Jenkins from your host machine on [http://10.11.12.100:8080/jenkins](http://10.11.12.100:8080/jenkins).
+
+Finally, follow [the official plugin configuration documentation](https://wiki.jenkins-ci.org/display/JENKINS/Deveo+Plugin#DeveoPlugin-Configuringtheplugin) to set things up.
+
+### Configuring SSH access to Deveo development environment
+
+For you to be able to configure jobs with SSH URLs, you'll need to generate a new SSH key pair for the user that is running the Jenkins process on your virtual machine.
+
+SSH into the machine and generate a new SSH key
+
+    $ vagrant ssh
+    $ ssh-keygen -t rsa
+
+This will generate a private key (`/home/vagrant/.ssh/id_rsa`) and a public key (`/home/vagrant/id_rsa.pub`). Copy the contents of the public key and use it to create a new SSH key to Deveo. The SSH key should belong to a bot that belongs to the project your configured repository belongs to.
+
+When you're done, your Jenkins job should be able to clone the configured repository successfully via SSH.
