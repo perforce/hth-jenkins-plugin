@@ -42,6 +42,11 @@ EOF
     # Stop the jenkins service so that hpi:run doesn't complain about 8080 port
     sudo service jenkins stop
     sudo update-rc.d jenkins disable
+
+    # Configuring dev.deveo.com hostname
+    if ! grep "^10.11.12.13 dev.deveo.com$" /etc/hosts &> /dev/null ; then
+        echo '10.11.12.13 dev.deveo.com' | sudo tee -a /etc/hosts > /dev/null
+    fi
   SHELL
 end
 
