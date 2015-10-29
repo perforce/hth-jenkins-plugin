@@ -1,4 +1,4 @@
-# Deveo Jenkins Notification Plugin
+# Deveo Jenkins Notification Plugin [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/deveo-plugin)](https://jenkins.ci.cloudbees.com/job/plugins/job/deveo-plugin/)
 
 Use this plugin to create build events to Deveo from your Jenkins builds. See the [official documentation](https://wiki.jenkins-ci.org/display/JENKINS/Deveo+Plugin) for more information.
 
