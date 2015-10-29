@@ -123,7 +123,7 @@ public class DeveoNotifier extends Notifier {
     }
 
     private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
-        return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
+        return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), getAccountKey());
     }
 
     public void notifyDeveo(AbstractBuild build, BuildListener listener) {
