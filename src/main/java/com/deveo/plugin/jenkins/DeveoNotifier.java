@@ -142,9 +142,6 @@ public class DeveoNotifier extends Notifier {
 
         try {
             repository = new DeveoRepository(repositoryURL);
-        } catch (MalformedURLException ex) {
-            logError(listener, "The configured repository URL is malformed.", ex);
-            return;
         } catch (DeveoURLException ex) {
             logError(listener, "The configured repository URL is not a Deveo URL.", ex);
             return;
