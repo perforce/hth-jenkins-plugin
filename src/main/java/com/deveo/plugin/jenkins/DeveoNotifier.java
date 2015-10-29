@@ -170,7 +170,7 @@ public class DeveoNotifier extends Notifier {
     @Extension
     public static final class DeveoBuildStepDescriptor extends BuildStepDescriptor<Publisher> {
 
-        private String hostname = "https://deveo.com";
+        private String hostname = "https://app.deveo.com";
         private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
         private String companyKey = "";
 
