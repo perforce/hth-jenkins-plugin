@@ -1,13 +1,11 @@
 package com.deveo.plugin.jenkins;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeveoRepository {
 
-    private static final String PATH_PATTERN = "\\A/?([^/]*)/projects/([^/]*)/repositories/(mercurial|git|subversion)/([^/]*)/?\\z";
+    private static final String PATH_PATTERN = ".+/projects/([^/]+)/repositories/(?:mercurial|git|subversion)/([^/]+)";
 
     private String projectId;
     private String id;
@@ -17,14 +15,13 @@ public class DeveoRepository {
         this.id = id;
     }
 
-    public DeveoRepository(String repositoryURL) throws MalformedURLException, DeveoURLException {
-        String repositoryPath = new URL(repositoryURL).getPath();
+    public DeveoRepository(String repositoryURL) throws DeveoURLException {
         Pattern pattern = Pattern.compile(PATH_PATTERN);
-        Matcher matcher = pattern.matcher(repositoryPath);
+        Matcher matcher = pattern.matcher(repositoryURL);
 
         if (matcher.matches()) {
-            this.projectId = matcher.group(2);
-            this.id = matcher.group(4);
+            this.projectId = matcher.group(1);
+            this.id = matcher.group(2);
         } else {
             throw new DeveoURLException("The URL doesn't appear to be a Deveo URL.");
         }

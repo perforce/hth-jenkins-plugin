@@ -18,7 +18,6 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.MalformedURLException;
 
 public class DeveoNotifier extends Notifier {
 
@@ -100,7 +99,7 @@ public class DeveoNotifier extends Notifier {
     }
 
     private String getRef(SCM scm, EnvVars environment) {
-        return scm.getType() == SCM_GIT ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
+        return scm.getType().equals(SCM_GIT) ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
     }
 
     private String getRepositoryURL(SCM scm, EnvVars environment) {
@@ -124,7 +123,7 @@ public class DeveoNotifier extends Notifier {
     }
 
     private DeveoAPIKeys getApiKeys(DeveoBuildStepDescriptor descriptor) {
-        return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), accountKey);
+        return new DeveoAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), getAccountKey());
     }
 
     public void notifyDeveo(AbstractBuild build, BuildListener listener) {
@@ -142,9 +141,6 @@ public class DeveoNotifier extends Notifier {
 
         try {
             repository = new DeveoRepository(repositoryURL);
-        } catch (MalformedURLException ex) {
-            logError(listener, "The configured repository URL is malformed.", ex);
-            return;
         } catch (DeveoURLException ex) {
             logError(listener, "The configured repository URL is not a Deveo URL.", ex);
             return;
@@ -174,7 +170,7 @@ public class DeveoNotifier extends Notifier {
     @Extension
     public static final class DeveoBuildStepDescriptor extends BuildStepDescriptor<Publisher> {
 
-        private String hostname = "https://deveo.com";
+        private String hostname = "https://app.deveo.com";
         private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
         private String companyKey = "";
 
