@@ -100,7 +100,7 @@ public class DeveoNotifier extends Notifier {
     }
 
     private String getRef(SCM scm, EnvVars environment) {
-        return scm.getType() == SCM_GIT ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
+        return scm.getType().equals(SCM_GIT) ? environment.get("GIT_BRANCH").replace("origin/", "") : "";
     }
 
     private String getRepositoryURL(SCM scm, EnvVars environment) {
