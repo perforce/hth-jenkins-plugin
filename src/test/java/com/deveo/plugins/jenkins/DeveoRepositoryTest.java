@@ -72,4 +72,20 @@ public class DeveoRepositoryTest {
         assertEquals("bar", repository.getProjectId());
         assertEquals("baz", repository.getId());
     }
+
+    @Test
+    public void acceptsSlashesInRepository() throws DeveoURLException {
+        repository = new DeveoRepository("deveo@deveo.com:foo/projects/bar/repositories/git/path/to/repo");
+
+        assertEquals("bar", repository.getProjectId());
+        assertEquals("path/to/repo", repository.getId());
+    }
+
+    @Test
+    public void ignoresEndingSlash() throws DeveoURLException {
+        repository = new DeveoRepository("deveo@deveo.com:foo/projects/bar/repositories/git/path/to/repo/");
+
+        assertEquals("bar", repository.getProjectId());
+        assertEquals("path/to/repo", repository.getId());
+    }
 }

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class DeveoRepository {
 
-    private static final String PATH_PATTERN = ".+/projects/([^/]+)/repositories/(?:mercurial|git|subversion)/([^/]+)";
+    private static final String PATH_PATTERN = ".+/projects/([^/]+)/repositories/(?:mercurial|git|subversion)/(.+?)/?$";
 
     private String projectId;
     private String id;
