@@ -2,9 +2,6 @@
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
     <f:section title="Helix TeamHub notifier">
-        <f:entry title="Helix TeamHub Plugin Key" field="pluginKey">
-            <f:textbox default="3c94d47d6257ca0d3bc54a9b6a91aa64"></f:textbox>
-        </f:entry>
         <f:entry title="Helix TeamHub Company Key" field="companyKey">
             <f:textbox></f:textbox>
         </f:entry>

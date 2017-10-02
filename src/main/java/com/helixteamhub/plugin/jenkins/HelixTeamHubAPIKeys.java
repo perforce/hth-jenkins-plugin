@@ -2,20 +2,14 @@ package com.helixteamhub.plugin.jenkins;
 
 public class HelixTeamHubAPIKeys {
 
-    private static final String FORMAT = "plugin_key=\"%s\",company_key=\"%s\",account_key=\"%s\"";
+    private static final String FORMAT = "company_key=\"%s\",account_key=\"%s\"";
 
-    private String pluginKey;
     private String companyKey;
     private String accountKey;
 
-    public HelixTeamHubAPIKeys(String pluginKey, String companyKey, String accountKey) {
-        this.pluginKey = pluginKey;
+    public HelixTeamHubAPIKeys(String companyKey, String accountKey) {
         this.companyKey = companyKey;
         this.accountKey = accountKey;
-    }
-
-    public String getPluginKey() {
-        return pluginKey;
     }
 
     public String getCompanyKey() {
@@ -27,7 +21,7 @@ public class HelixTeamHubAPIKeys {
     }
 
     public String toString() {
-        return String.format(FORMAT, pluginKey, companyKey, accountKey);
+        return String.format(FORMAT, companyKey, accountKey);
     }
 
 }

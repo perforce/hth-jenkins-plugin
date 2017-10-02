@@ -123,7 +123,7 @@ public class HelixTeamHubNotifier extends Notifier {
     }
 
     private HelixTeamHubAPIKeys getApiKeys(HelixTeamHubBuildStepDescriptor descriptor) {
-        return new HelixTeamHubAPIKeys(descriptor.getPluginKey(), descriptor.getCompanyKey(), getAccountKey());
+        return new HelixTeamHubAPIKeys(descriptor.getCompanyKey(), getAccountKey());
     }
 
     public void notifyHelixTeamHub(AbstractBuild build, BuildListener listener) {
@@ -171,7 +171,6 @@ public class HelixTeamHubNotifier extends Notifier {
     public static final class HelixTeamHubBuildStepDescriptor extends BuildStepDescriptor<Publisher> {
 
         private String hostname = "https://helixteamhub.cloud";
-        private String pluginKey = "3c94d47d6257ca0d3bc54a9b6a91aa64";
         private String companyKey = "";
 
         public HelixTeamHubBuildStepDescriptor() {
@@ -180,10 +179,6 @@ public class HelixTeamHubNotifier extends Notifier {
 
         public String getHostname() {
             return hostname;
-        }
-
-        public String getPluginKey() {
-            return pluginKey;
         }
 
         public String getCompanyKey() {
@@ -203,7 +198,6 @@ public class HelixTeamHubNotifier extends Notifier {
         @Override
         public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
             this.hostname = json.getString("hostname");
-            this.pluginKey = json.getString("pluginKey");
             this.companyKey = json.getString("companyKey");
 
             save();
