@@ -11,8 +11,19 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo add-apt-repository -y ppa:webupd8team/java
     sudo apt-get update
-    sudo apt-get install openjdk-7-jdk jenkins maven git mercurial subversion -y
+    sudo apt-get -y upgrade
+    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+    sudo apt-get -y install oracle-java8-installer
+    sudo apt-get install jenkins -y
+
+    cd /opt/
+    sudo wget http://ftp.ps.pl/pub/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz
+    sudo tar -xvzf apache-maven-3.5.0-bin.tar.gz
+
+    sudo apt-get install git mercurial subversion -y
 
     # Run Jenkins as the vagrant user
     sudo sed -i 's/^JENKINS_USER.*/JENKINS_USER=vagrant/;s/^JENKINS_GROUP.*/JENKINS_GROUP=vagrant/' /etc/default/jenkins
@@ -26,7 +37,7 @@ Vagrant.configure(2) do |config|
     <profile>
       <id>compiler</id>
         <properties>
-          <JAVA_1_7_HOME>/usr/lib/jvm/java-7-openjdk-amd64</JAVA_1_7_HOME>
+          <JAVA_1_8_HOME>/usr/lib/jvm/java-8-openjdk-amd64</JAVA_1_8_HOME>
         </properties>
     </profile>
   </profiles>
@@ -37,7 +48,11 @@ Vagrant.configure(2) do |config|
 EOF
 
     # Set HUDSON_HOME for maven builds
-    echo 'export HUDSON_HOME=/var/lib/jenkins' > ~/.profile
+    echo 'export HUDSON_HOME=/var/lib/jenkins' >> ~/.profile
+    echo 'export M2_HOME=/opt/apache-maven-3.5.0' >> ~/.profile
+    echo 'export M2=$M2_HOME/bin' >> ~/.profile
+    echo 'export MAVEN_OPTS="-Xms256m -Xmx512m"' >> ~/.profile
+    echo 'export PATH=$M2:$PATH' >> ~/.profile
 
     # Stop the jenkins service so that hpi:run doesn't complain about 8080 port
     sudo service jenkins stop
