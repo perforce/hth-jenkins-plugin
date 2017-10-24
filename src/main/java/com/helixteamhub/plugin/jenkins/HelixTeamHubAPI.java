@@ -12,6 +12,7 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.nio.charset.StandardCharsets;
 
 public class HelixTeamHubAPI {
 
@@ -81,7 +82,7 @@ public class HelixTeamHubAPI {
             connection.setRequestProperty("Authorization", helixTeamHubAPIKeys.toString());
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Content-Length", String.valueOf(content.getBytes().length));
+            connection.setRequestProperty("Content-Length", String.valueOf(content.getBytes(StandardCharsets.UTF_8).length));
             connection.setUseCaches(false);
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -94,7 +95,7 @@ public class HelixTeamHubAPI {
 
             BufferedReader in;
             if (connection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                in = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
                 StringBuffer responseContent = new StringBuffer();
                 try {
                     String responseLine;

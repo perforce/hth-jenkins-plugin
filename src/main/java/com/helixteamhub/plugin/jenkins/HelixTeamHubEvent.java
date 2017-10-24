@@ -78,19 +78,19 @@ public class HelixTeamHubEvent {
     }
 
     public String[] getCommits() {
-        return commits;
+        return commits.clone();
     }
 
     public void setCommits(String[] commit) {
-        this.commits = commit;
+        this.commits = commit.clone();
     }
 
     public String[] getResources() {
-        return resources;
+        return resources.clone();
     }
 
     public void setResources(String[] resources) {
-        this.resources = resources;
+        this.resources = resources.clone();
     }
 
 }
