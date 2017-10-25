@@ -1,4 +1,4 @@
-# Helix TeamHub Jenkins Notification Plugin [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/helix-teamhub-plugin)](https://jenkins.ci.cloudbees.com/job/plugins/job/helix-teamhub-plugin/)
+# Helix TeamHub Jenkins Notification Plugin [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/helix-teamhub-plugin/master)](https://ci.jenkins.io/job/Plugins/job/helix-teamhub-plugin/job/master/)
 
 Use this plugin to create build events to Helix TeamHub from your Jenkins builds. See the [official documentation](https://wiki.jenkins-ci.org/display/JENKINS/Helix+TeamHub+Plugin) for more information.
 
