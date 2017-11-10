@@ -11,7 +11,7 @@
     <packaging>hpi</packaging>
     <name>Helix TeamHub Plugin</name>
     <description>Creates build events to Helix TeamHub</description>
-    <url>https://wiki.jenkins-ci.org/display/JENKINS/Helix+TemHub+Plugin</url>
+    <url>https://wiki.jenkins-ci.org/display/JENKINS/Helix+TeamHub+Plugin</url>
 
     <developers>
         <developer>
