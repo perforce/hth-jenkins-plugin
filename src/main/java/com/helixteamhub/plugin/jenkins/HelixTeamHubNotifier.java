@@ -49,7 +49,7 @@ public class HelixTeamHubNotifier extends Notifier {
     }
 
     public boolean projectIdAndRepositoryIdProvided() {
-        return !projectId.isEmpty() && !repositoryId.isEmpty();
+        return projectId != null && !projectId.isEmpty() && repositoryId != null && !repositoryId.isEmpty();
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
