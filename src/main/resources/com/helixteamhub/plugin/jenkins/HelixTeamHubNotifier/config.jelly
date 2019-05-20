@@ -5,12 +5,15 @@
         <f:textbox/>
     </f:entry>
 
-    <f:entry title="Project ID" field="projectId">
-        <f:textbox/>
-    </f:entry>
+    <f:optionalBlock title="Enter project and repository IDs manually" field="enterProjectAndRepositoryIdsManually" inline="true" checked="${instance.projectIdAndRepositoryIdProvided()}">
 
-    <f:entry title="Repository ID" field="repositoryId">
-        <f:textbox/>
-    </f:entry>
+        <f:entry title="Project ID" field="projectId">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry title="Repository ID" field="repositoryId">
+            <f:textbox/>
+        </f:entry>
+    </f:optionalBlock>
 
 </j:jelly>

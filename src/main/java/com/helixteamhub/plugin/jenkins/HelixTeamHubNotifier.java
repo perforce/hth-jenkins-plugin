@@ -48,6 +48,10 @@ public class HelixTeamHubNotifier extends Notifier {
         return projectId;
     }
 
+    public boolean projectIdAndRepositoryIdProvided() {
+        return !projectId.isEmpty() && !repositoryId.isEmpty();
+    }
+
     public BuildStepMonitor getRequiredMonitorService() {
         return BuildStepMonitor.NONE;
     }
@@ -148,7 +152,7 @@ public class HelixTeamHubNotifier extends Notifier {
         String projectId = getProjectId();
         String repositoryId = getRepositoryId();
 
-        if (projectId == null || projectId.isEmpty() || repositoryId == null || repositoryId.isEmpty()) {
+        if (!projectIdAndRepositoryIdProvided()) {
             String repositoryURL = getRepositoryURL(scm, environment);
             HelixTeamHubRepository repository;
 
@@ -168,7 +172,7 @@ public class HelixTeamHubNotifier extends Notifier {
         try {
             api.create("events", event.toJSON());
         } catch (HelixTeamHubException ex) {
-            logError(listener, String.format("Failed to create event.\nEvent: %s", event.toJSON()), ex);
+            logError(listener, String.format("Failed to create event.%nEvent: %s", event.toJSON()), ex);
         }
     }
 
